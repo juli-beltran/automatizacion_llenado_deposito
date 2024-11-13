@@ -25,7 +25,7 @@ void controlCicloClorado() {
   if (volumenAClorar != 0 && errorClorado == false) {  
     volumenNoClorado += volumenAClorar;
     EEPROM.update(0, volumenNoClorado);
-    litrosNoClorados = volumenNoClorado * FACTOR_CAUDALIMETRO / 1000;//para lcd
+    
     volumenAClorar = 0;
     return;
   }
@@ -76,7 +76,6 @@ if (contadorTiempoEstabilizacion > 1) {
   if (errorClorado == HIGH) {  
     volumenNoClorado += volumenAClorar;  
     EEPROM.update(0, volumenNoClorado); 
-    litrosNoClorados = volumenNoClorado * FACTOR_CAUDALIMETRO / 1000;//para lcd
   }
   contadorTiempoEstabilizacion = 0;
   volumenAClorar = 0;  // Finaliza la petición de clorado

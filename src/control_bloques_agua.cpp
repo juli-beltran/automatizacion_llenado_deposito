@@ -51,8 +51,7 @@ void controlCicloAgua(void) {
   attachInterrupt(digitalPinToInterrupt(SENSOR_FLUJO), incrementoBloqueAgua, RISING);  //activa interrupcion
 
   cicloAgua += bloqueAguaCopia;  //incrementa ciclo de agua
-  litrosCicloAgua = cicloAgua * FACTOR_CAUDALIMETRO / 1000; //valor de ciclo de agua en litros para datos lcd
-  caudal = bloqueAguaCopia * FACTOR_CAUDALIMETRO / 83.3333;// valor cakculado del caudalpara datos lcd
+
   if (bloqueAguaCopia == 0) { // comprueba si hay caudal o no
     estadoLlenado = HAY_CAUDAL;
   }

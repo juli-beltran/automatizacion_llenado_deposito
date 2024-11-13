@@ -19,6 +19,7 @@ void setup() {
     lcd.init();// initialize the lcd 
     lcd.noBacklight ();
     EEPROM.get(0, volumenNoClorado);
+    
     testLeds();
     lcd.backlight();
     lcd.setCursor ( 3,1);
@@ -41,17 +42,22 @@ void loop() {
     static boolean anteriorTic2 = LOW;
 
     generacionTics(); 
+    maquinaEstado();
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     if(tic0 != anteriorTic0){ //PROCESOS QUE ACTUALIZAN CADA TIC0
         anteriorTic0 = tic0;
         actualizaLeds(ledsApagados);
     } 
+
+
+
  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     if(tic1 != anteriorTic1){//PROCESOS QUE ACTUALIZAN CADA TIC1
         anteriorTic1 = tic1;
         controlNivel();// actualiza nivel Agua;
         controlBombaAgua(); //activa o desactiva rele bomba, modifica estadoBombaAgua, activa error 2
         controlCicloClorado ();
+        calculos();
     }
 
 
@@ -59,9 +65,6 @@ void loop() {
     if(tic2 != anteriorTic2){//PROCESOS QUE ACTUALIZAN CADA TIC2
         anteriorTic2 = tic2;
         controlCicloAgua();//cada 5 sg. resetea bloqueAgua, modifica bloqueAguaCopia usada como indicador de flujo, activa error 1, modifica ciclos clorado, modifica ciclo agua
-        calculos();
-    //consola();
-    //actualiza_lcd();
     }
   
 }

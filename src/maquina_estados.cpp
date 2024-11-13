@@ -17,7 +17,6 @@ void maquinaEstado(void) {
         PANTALLA_3
     };
 
-    dibujaPantalla1();
 
   switch (estadoMaquina) {
       //pantalla 1///////////////////////////////////////////////////////////////////////////
@@ -27,7 +26,7 @@ void maquinaEstado(void) {
         dibujaPantalla2();
         break;
         }
-      if(tic1 != anteriorTic){ //si NO_PULSADO
+      if(tic1 != anteriorTic){ //
         anteriorTic = tic1;     
         actualizaPantalla1();
         break;     
@@ -73,55 +72,87 @@ void maquinaEstado(void) {
 
 
 void lcdPrintEstadoBomba(void){
-if (estadoBombaAgua == HIGH){ 
-  lcd.print("run");
-  return;
-}
+
 if (error1){ 
-  lcd.print("err.flow");
+  lcd.print("ErrCaudal");
   return;
 }
 if (error2){ 
-  lcd.print("err.time");
+  lcd.print("ErrTiempo");
   return;
 }
-lcd.print("stop");
+lcd.print  ("SinError ");
   return;
 }
-//PANTALLA1////////////////////////////////////////////////////////////////////////////////////////
+//PANTALLA1----------------------------------------------------
 void dibujaPantalla1(void) {
   lcd.clear();
   lcd.setCursor(1,0);
-  lcd.print("Bomba agua");
+  lcd.print("BombaAgua=");
   lcd.setCursor(1,1);
-  lcd.print("Vol.ciclo=");
+  lcd.print("Caudal[l/m]=");
   lcd.setCursor(1,2);
-  lcd.print("Tie.bomba=");
+  lcd.print("VolNoClor[l]=");
   lcd.setCursor(1,3);
-  lcd.print("Peso clor=");
+  lcd.print("NivelCloro[%]=");
 }
 void actualizaPantalla1(void) {
 
-  lcd.setCursor(12, 0);
+  lcd.setCursor(11, 0);
   lcdPrintEstadoBomba();
   lcd.setCursor(12, 1);
-  lcd.print(litrosCicloAgua);
-  lcd.setCursor(12, 2);
+  lcd.print(caudal);
+  lcd.setCursor(14, 2);
   lcd.print(tiempoFuncionamientoBombaAgua);
-  lcd.setCursor(12, 3);
-  lcd.print(pesoInicialCloro);
+  lcd.setCursor(14, 3);
+  lcd.print(nivelCloroPorcentaje);
    }    
 
 
-//PANTALLA2/////////////////////////////////////////////////////////
+//PANTALLA2------------------------------------------------
 void dibujaPantalla2(void) {
+   lcd.clear();
+  lcd.setCursor(1,0);
+  lcd.print("BombaTiempo[m]=");
+  lcd.setCursor(1,1);
+  lcd.print("VolCicloAgua[l]=");
+  lcd.setCursor(1,3);
+  lcd.print("VolAguaAc[m3]"); 
   }
 void actualizaPantalla2(void) {
+
+  lcd.setCursor(16, 0);
+  lcd.print(tiempoFuncionamientoBombaAgua);
+  lcd.setCursor(17, 1);
+  lcd.print(litrosCicloAgua);
+  
+  lcd.setCursor(15, 3);
+  lcd.print(metros3volumenAcumulado);
+   
   }
-//PANTALLA_3/////////////////////////////////////////////////////////
+//PANTALLA_3-----------------------------------------------
 void dibujaPantalla3(void){
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print(">BorraErroresBomba");
+  lcd.setCursor(0,1);
+  lcd.print(">BorraErroresCloro");
 
 }
+
+
 void actualizaPantalla3(void){
 
+}
+//PANTALLA4---------------------------------------------------------
+void dibujaPantalla4(void) {
+  lcd.clear();
+  lcd.setCursor(1,0);
+  lcd.print("UltCicloCloroErr=");
+  lcd.setCursor(1,1);
+  lcd.print("PesoCloTeor=");
+  lcd.setCursor(1,2);
+  lcd.print("PesoCloReal=");
+  lcd.setCursor(1,3);
+  lcd.print("VolAClorar[l]=");
 }

@@ -71,7 +71,7 @@ extern Pulsador Pulsador1;
   const unsigned int MINIMO_PESO_CLORO = 500; //gr
   const unsigned int DOSIS_CLORO = 20;   // en gr por  tic /  con concentracion de 3% hipoclorito 20 gr/ 100 lt
   const unsigned int MINIMO_VOLUMEN_A_CLORAR = 20.0 *1000/ FACTOR_CAUDALIMETRO ;// en impulsos. litros *1000/ FACTOR_CAUDALIMETRO
- 
+  const unsigned int PESO_DEPOSITO_CLORO = 5000;
 //////////////////////declaracion variables 
 
 //tics---------------------------------------------------
@@ -102,6 +102,8 @@ extern unsigned int pesoCicloClorado;
 extern unsigned long volumenNoClorado;
 extern unsigned int volumenAClorar;
 extern unsigned int tiempoClorado;
+extern int nivelCloroPorcentaje; 
+extern unsigned int metros3volumenAcumulado;
 
 
 
@@ -129,5 +131,8 @@ void dibujaPantalla2(void);
 void actualizaPantalla2(void);
 void dibujaPantalla3(void);
 void actualizaPantalla3(void);
+void dibujaPantalla4(void);
 void lcdPrintEstadoBomba(void);
+void maquinaEstado(void);
+
 #endif
