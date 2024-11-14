@@ -1,0 +1,3 @@
+posiciones memoria eeprom
+0       volumenNoClorado unsigned long
+4       m3volumenAcumulado unsigned long

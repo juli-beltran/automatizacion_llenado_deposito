@@ -9,12 +9,14 @@ void maquinaEstado(void) {
     static bool anteriorTic = 0;
     Pulsador pulsadorAdelante (PULSADOR_ADELANTE);
     Pulsador pulsadorAtras (PULSADOR_ATRAS);
+   
 
     enum estadosMaquina {
 
         PANTALLA_1,
         PANTALLA_2,
-        PANTALLA_3
+        PANTALLA_3,
+        PANTALLA_4
     };
 
 

@@ -1,116 +1,76 @@
-#include <Arduino.h>
 #include "declaraciones.h"
-volatile unsigned int bloqueAgua=0;
-uint8_t nivelAgua = 0;
-unsigned int bloqueAguaCopia = 0;
-unsigned int cicloAgua = 0;
-bool estadoDeLlenado = SIN_CAUDAL;
-bool estadoBombaAgua = LOW;
-unsigned int tiempoFuncionamientoBombaAgua = 0;
-bool estadoDeControl= ESPERANDO_BLOQUE_CON_CAUDAL;
-unsigned int volumenAClorar = 0;
-bool error1 = false;
-bool error2 = false;
 
-
-////////////////////////////////////////////FUNCION INTERRUPCION SENSOR FLUJO//////////////////////////////////////////////////////////////////////////
-void incrementoBloqueAgua() {  //Funcion interrupcion señal caudalimetro
+// Funcion interrupcion señal caudalimetro
+void incrementoBloqueAgua()
+{
   bloqueAgua++;
   return;
 }
 
-/////////////////////////////////////////////CONTROL NIVEL AGUA///////////////////////////////////////////////////////////////////////////////////////////
-// la funcion lee el nivel de agua/////////////////////////////////////////////////////////////////////
-// modifica  la variable global nivelAgua/////////////////////////////////////////////////////////////
-void controlNivel() {
-  if (digitalRead(SENSOR_NIVEL_MAX) == LOW) {
-    nivelAgua = MAX;
-    return;
-  }
-  if (digitalRead(SENSOR_NIVEL_ALTO) == LOW) {
-    nivelAgua = ALTO;
-    return;
-  }
-  if (digitalRead(SENSOR_NIVEL_MEDIO) == LOW) {
-    nivelAgua = MEDIO;
-    return;
-  } else {
-    nivelAgua = BAJO;
-    return;
-  }
+void solicitudClorado(void)
+{
+  metros3volumenAcumulado += (cicloAgua * FACTOR_CAUDALIMETRO); // actualiza m3 acumulados
+  EEPROM.update(4, metros3volumenAcumulado);
+  volumenAClorar = cicloAgua;
+  cicloAgua = 0;
 }
 
-/////////////////////////////////////////////CONTROL BLOQUES DE AGUA/////////////////////////////////////////////////////////////////////////////////////////
+// control de los ciclos de llenado de agua y peticion de clorado
+void controlCicloAgua(void)
+{
+  // constantes y variables para controlar un cese en el caudal de llenado
+  const bool HAY_CAUDAL = true;
+  const bool SIN_CAUDAL = false;
+  const bool ESPERANDO_BLOQUE_CON_CAUDAL = true;
+  const bool ESPERANDO_BLOQUE_SIN_CAUDAL = false;
+  
+  static bool estadoLlenado = SIN_CAUDAL;
+  static bool estadoDeControl = ESPERANDO_BLOQUE_CON_CAUDAL;
 
-void controlCicloAgua(void) {
-  bool estadoLlenado; // hay caudal o no
-  bool estadoDeControl = ESPERANDO_BLOQUE_CON_CAUDAL; // inicia esperando un caudal y despues pasa a esperar una detencion del caudal
-  detachInterrupt(digitalPinToInterrupt(SENSOR_FLUJO));  // detiene interrupccion
-  bloqueAguaCopia = bloqueAgua;                          // salva bloque de agua  en bloque de agua copia para su uso y lo resetea
+  // desactivacion momentanea de la interrupcion para poder salvar y resetear bloque de agua
+  detachInterrupt(digitalPinToInterrupt(SENSOR_FLUJO));
+  bloqueAguaCopia = bloqueAgua;
   bloqueAgua = 0;
-  attachInterrupt(digitalPinToInterrupt(SENSOR_FLUJO), incrementoBloqueAgua, RISING);  //activa interrupcion
+  attachInterrupt(digitalPinToInterrupt(SENSOR_FLUJO), incrementoBloqueAgua, RISING);
 
-  cicloAgua += bloqueAguaCopia;  //incrementa ciclo de agua
+  // incrementa ciclo de agua
+  cicloAgua += bloqueAguaCopia;
 
-  if (bloqueAguaCopia == 0) { // comprueba si hay caudal o no
-    estadoLlenado = HAY_CAUDAL;
-  }
-  else {
-    estadoLlenado = SIN_CAUDAL;
-  }
-
-  if ((bloqueAguaCopia < MINIMO_BLOQUE_AGUA) && (estadoBombaAgua == HIGH) && (tiempoFuncionamientoBombaAgua > 30)) {  // comprueba que exista caudal minimocon la bomba en funcionamiento
+  // comprueba que exista caudal minimo con la bomba en funcionamiento y con un tirmpo para estabilizar el flujo
+  // si el caudal es insuficientegenera error1 que detendra la bomba
+  if ((bloqueAguaCopia < MINIMO_BLOQUE_AGUA) && (estadoBombaAgua == HIGH) && (tiempoFuncionamientoBombaAgua > 30))
+  {
     error1 = true;
   }
 
-  if (cicloAgua > FIN_CICLO_AGUA) {  //comprueba si se ha alcanzado el volumen a clorar, carga volumen a clorar y resetea ciclo agua
+  // comprueba si se ha alcanzado el volumen a clorar, peticion de clorado
+  if (cicloAgua > FIN_CICLO_AGUA)
+  {
     solicitudClorado();
   }
 
-  // detecta un corte de caudal y solicita clorado si el volumen es mayor al minimo
-  if ((estadoLlenado == HAY_CAUDAL) && (estadoDeControl == ESPERANDO_BLOQUE_CON_CAUDAL)){
-    estadoDeControl = ESPERANDO_BLOQUE_SIN_CAUDAL;
-  } 
-  
-  if ((estadoLlenado == SIN_CAUDAL &&  estadoDeControl == ESPERANDO_BLOQUE_SIN_CAUDAL)){
-    estadoDeControl = ESPERANDO_BLOQUE_CON_CAUDAL;
-    if (cicloAgua > MINIMO_VOLUMEN_A_CLORAR) {
-    solicitudClorado ();
-    } 
+  // detecta si hay una detencion en el caudal y si es superior al minimo solicita clorado
+
+  if (bloqueAguaCopia == 0) // comprueba si hay caudal o no
+  {
+    estadoLlenado = HAY_CAUDAL;
   }
-} 
+  else
+  {
+    estadoLlenado = SIN_CAUDAL;
+  }
 
-void solicitudClorado (void) {
-      volumenAClorar = cicloAgua;
-      cicloAgua = 0;
-}
+  if ((estadoLlenado == HAY_CAUDAL) && (estadoDeControl == ESPERANDO_BLOQUE_CON_CAUDAL))
+  {
+    estadoDeControl = ESPERANDO_BLOQUE_SIN_CAUDAL;
+  }
 
- 
-
-//////////////////////////////////////////////CONTROL BOMBA AGUA////////////////////////////////////////////////////////////////////////////////////////////
-
-void controlBombaAgua() {
-
-  if (estadoBombaAgua == LOW) {                                      //si la bomba esta parada, comprueba condciones para ponerse en marcha
-    if ((nivelAgua < ALTO) && (error1 == LOW) && (error2 == LOW)) {  //arranca la bomba si deposito inferior a alto y no hay errores 1 y 2
-      estadoBombaAgua = HIGH;                                        //arranca bomba y pone a cero el contador de tiempo y sale de la funcion
-      digitalWrite(RELE_AGUA, HIGH);
-      tiempoFuncionamientoBombaAgua = 0;
+  if (estadoLlenado == SIN_CAUDAL && estadoDeControl == ESPERANDO_BLOQUE_SIN_CAUDAL)
+  {
+    estadoDeControl = ESPERANDO_BLOQUE_CON_CAUDAL;
+    if (cicloAgua > MINIMO_VOLUMEN_A_CLORAR)
+    {
+      solicitudClorado();
     }
-    return;
-  } 
-  else {                                                            //la bomba esta en funcionamiento, comprueba condiciones para detener en funcionamiemto
-    if (tiempoFuncionamientoBombaAgua >= MAXIMO_TIEMPO_TICS_BOMBA) {  //comprueba tiempo de funconamiento, si esta rebasado actualiza error2
-      error2 = HIGH;
-    }
-
-    if ((nivelAgua == MAX) || (error1 == HIGH) || (error2 == HIGH)) {  //si se dan las condiciones detiene la bomba
-      estadoBombaAgua = LOW;
-      digitalWrite(RELE_AGUA, LOW);
-    } 
-    else {  //la bomba continua su funcionamiento
-      tiempoFuncionamientoBombaAgua++;
-    }
-    return;
   }
 }

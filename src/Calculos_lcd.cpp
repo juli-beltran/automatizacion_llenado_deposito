@@ -4,7 +4,7 @@
  float litrosCicloAgua = 0;
  float litrosNoClorados = 0;
  int nivelCloroPorcentaje = 0;
- unsigned int metros3volumenAcumulado = 0;
+
  
 void calculos() {//calculos para obtener valores validos para pasar a lcd
   litrosCicloAgua = cicloAgua * FACTOR_CAUDALIMETRO / 1000; //valor de ciclo de agua en litros para datos lcd
