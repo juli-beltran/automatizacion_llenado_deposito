@@ -1,3 +1,9 @@
 posiciones memoria eeprom
-0       volumenNoClorado unsigned long
-4       m3volumenAcumulado unsigned long
+0       volumenNoClorado float
+4       m3volumenAcumulado float
+8       peso inicial cloro
+12      peso ciclo clorado teorico
+16      peso ciclo clorado real
+20      tiempo clorado
+24      volumen a clorar 
+28      error clorado     

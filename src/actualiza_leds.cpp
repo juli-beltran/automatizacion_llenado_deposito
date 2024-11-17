@@ -55,18 +55,18 @@ void actualizaLedNivel()
   if (nivelAgua >= ALTO)
   {
     digitalWrite(LED_AGUA_ROJO, LOW); // apaga led rojo
-    if (bloqueAguaCopia != 0)         // si hay flujo led verde parpadea
-      digitalWrite(LED_AGUA_VERDE, tic1);
+    if (caudal != 0)         // si hay flujo led verde parpadea
+      digitalWrite(LED_AGUA_VERDE, tic0);
     else
       digitalWrite(LED_AGUA_VERDE, HIGH); // si no hay flujo led verde fijo
     return;
   }
   if (nivelAgua == MEDIO)
   { // led rojo + verde para hacer amarillo
-    if (bloqueAguaCopia != 0)
+    if (caudal != 0)
     {
-      digitalWrite(LED_AGUA_VERDE, tic1);
-      digitalWrite(LED_AGUA_ROJO, tic1);
+      digitalWrite(LED_AGUA_VERDE, tic0);
+      digitalWrite(LED_AGUA_ROJO, tic0);
     }
     else
     {
@@ -78,8 +78,8 @@ void actualizaLedNivel()
   if (nivelAgua == BAJO)
   { // led rojo
     digitalWrite(LED_AGUA_VERDE, LOW);
-    if (bloqueAguaCopia != 0)
-      digitalWrite(LED_AGUA_ROJO, tic1);
+    if (caudal != 0)
+      digitalWrite(LED_AGUA_ROJO, tic0);
     else
       digitalWrite(LED_AGUA_ROJO, HIGH);
     return;

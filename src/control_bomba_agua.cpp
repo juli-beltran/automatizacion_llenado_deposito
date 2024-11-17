@@ -3,7 +3,6 @@
 //pone en funcionamiento o detiene la bomba de agua
 void controlBombaAgua()
 {
-
   if (estadoBombaAgua == LOW) // si la bomba esta parada, comprueba condciones para ponerse en marcha
   {
     if ((nivelAgua < ALTO) && (error1 == LOW) && (error2 == LOW))
@@ -16,7 +15,7 @@ void controlBombaAgua()
   }
   else // la bomba esta en funcionamiento
   {
-    if (tiempoFuncionamientoBombaAgua >= MAXIMO_TIEMPO_TICS_BOMBA)
+    if (tiempoFuncionamientoBombaAgua >= MAXIMO_TIEMPO_BOMBA)
     {
       error2 = HIGH; // comprueba tiempo de funconamiento, si esta rebasado actualiza error2
     }
@@ -27,8 +26,8 @@ void controlBombaAgua()
       digitalWrite(RELE_AGUA, LOW);
     }
     else
-    {                                  // la bomba continua su funcionamiento
-      tiempoFuncionamientoBombaAgua++; // incrementa tiempo funcionamiento
+    {                                  
+      tiempoFuncionamientoBombaAgua ++; // la bomba continua su funcionamiento
     }
     return;
   }

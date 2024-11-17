@@ -126,10 +126,10 @@ void actualizaPantalla2(void) {
   lcd.setCursor(16, 0);
   lcd.print(tiempoFuncionamientoBombaAgua);
   lcd.setCursor(17, 1);
-  lcd.print(litrosCicloAgua);
+  lcd.print(cicloAgua);
   
   lcd.setCursor(15, 3);
-  lcd.print(metros3volumenAcumulado);
+  //lcd.print(metros3volumenAcumulado);
    
   }
 //PANTALLA_3-----------------------------------------------
