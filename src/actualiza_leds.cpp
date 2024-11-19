@@ -17,7 +17,7 @@ void actualizaLedCloro()
     digitalWrite(LED_CLORO_ROJO, LOW);
     return;
   }
-  if (errorNivelCloro == true)          // nivel cloro bajo led amarillo
+  if (errorNivelCloroBajo == true)          // nivel cloro bajo led amarillo
   {
     digitalWrite(LED_CLORO_VERDE, HIGH);
     digitalWrite(LED_CLORO_ROJO, HIGH);
@@ -31,7 +31,7 @@ void actualizaLedCloro()
 //actualiza el led de bomba
 void actualizaLedBomba()
 {
-  if (error1 == true || error2 == true)
+  if (errorCaudalAguaInsuficiente == true || errorTiempoFuncionamientoBombaExcedido == true)
   {
     digitalWrite(LED_BOMBA_VERDE, LOW);//con algun error led rojo
     digitalWrite(LED_BOMBA_ROJO, HIGH);
