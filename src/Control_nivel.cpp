@@ -20,8 +20,7 @@ void controlNivel() {
   if (digitalRead(SENSOR_NIVEL_MEDIO) == LOW) {
     nivelAgua = MEDIO;
     return;
-  } else {
-    nivelAgua = BAJO;
-    return;
+  } 
+  nivelAgua = BAJO;
+  return;
   }
-}

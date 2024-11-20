@@ -11,8 +11,9 @@ void controlCicloClorado() {
   
   const uint8_t TIEMPO_ESTABILIZACION=5; // ciclos de entrada en funcion para estabilizar el peso del cloro
   static unsigned int contadorTiempoclorado = 0;  // Contador de tiempo de clorado
-  static uint8_t      contadorTiempoEstabilizacion = 0;  // Contador de tiempo de estabilización  
-  float               volumenNoClorado;// en litros, volumen que el clorado no ha sido correcto
+  static uint8_t contadorTiempoEstabilizacion = 0;  // Contador de tiempo de estabilización  
+  float volumenNoClorado;// en litros, volumen acumulado que el clorado no ha sido correcto
+  static unsigned int tiempoClorado = 0 ;// tiempo en segundos de bombeado de cloro
  
 // si no hay volumen a clorar sale 
   if (volumenAClorar == 0){
@@ -37,7 +38,7 @@ void controlCicloClorado() {
       EEPROM.update(VOLUMEN_A_CLORAR_ULTIMO_CICLO, volumenAClorar);
       EEPROM.update(PESO_CLORO_CALCULADO_ULTIMO_CICLO, pesoCalculadoCicloClorado);
       EEPROM.update(TIEMPO_CLORADO_ULTIMO_CICLO, tiempoClorado);
-      pesoInicialCloro = Balanza.get_units(NUMERO_MUESTRAS_PESO);  
+      pesoCloro = Balanza.get_units(NUMERO_MUESTRAS_PESO);  
       
       // Activa bomba y resetea tiempo
       contadorTiempoclorado = 0;
@@ -76,6 +77,7 @@ controlPeso();  // Controla el peso tras estabilización
   // Si se detectó un error en el ciclo de clorado, actualiza el volumen no clorado
 if (errorClorado == HIGH) 
 {  
+  EEPROM.get(VOLUMEN_AGUA_NO_CLORADO_ACUMULADO, volumenNoClorado); 
   volumenNoClorado += volumenAClorar;  
   EEPROM.update(VOLUMEN_AGUA_NO_CLORADO_ACUMULADO, volumenNoClorado); 
 }
@@ -87,13 +89,13 @@ void controlPeso() {
   float pesoFinalCloro;// en gr
   float PesoMedidoCicloCloro; //peso real cloro bombeado
   pesoFinalCloro = Balanza.get_units(NUMERO_MUESTRAS_PESO);
-  PesoMedidoCicloCloro = pesoInicialCloro - pesoFinalCloro;
+  PesoMedidoCicloCloro = pesoCloro - pesoFinalCloro;
   EEPROM.update(PESO_CLORO_MEDIDO_ULTIMO_CICLO, PesoMedidoCicloCloro);
-  pesoInicialCloro = pesoFinalCloro;
-  nivelCloroPorcentaje = static_cast <int> (pesoInicialCloro * 100/ PESO_DEPOSITO_CLORO_LLENO);
+  pesoCloro = pesoFinalCloro;
+  nivelCloroPorcentaje = static_cast <int> (pesoCloro * 100/ PESO_DEPOSITO_CLORO_LLENO);
   
   // Verifica el nivel mínimo de cloro y el error en el peso
-  if (pesoInicialCloro < MINIMO_PESO_CLORO) {
+  if (pesoCloro < MINIMO_PESO_CLORO) {
     errorNivelCloroBajo = HIGH;
     
   }

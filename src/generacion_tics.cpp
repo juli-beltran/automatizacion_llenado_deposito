@@ -1,8 +1,6 @@
 
 #include "declaraciones.h"
 
-bool tic0 = LOW;
-bool tic1 = LOW;
 
 
 void generacionTics(){

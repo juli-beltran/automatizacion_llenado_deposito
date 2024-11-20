@@ -20,10 +20,13 @@ void setup() {
     Lcd.print ("control llenado");
     Lcd.setCursor ( 3,2);
     Lcd.print ("V 1.0");
-    //lectura peso inicial cloro y generacion de aviso de nivel bajo
-    pesoInicialCloro = Balanza.get_units(5);
-    nivelCloroPorcentaje = static_cast <int> (pesoInicialCloro * 100/ PESO_DEPOSITO_CLORO_LLENO);
-    if(pesoInicialCloro < MINIMO_PESO_CLORO){
+    EEPROM.get(VOLUMEN_AGUA_TOTAL_ACUMULADO, volAguaTotalAcc);//recupera agua acumulada
+    EEPROM.get (ERROR_CLORADO, errorClorado);//recupera anterior error clorado al resetear
+    //lectura peso inicial cloro y generacion de aviso de nivel bajo 
+    pesoCloro = Balanza.get_units(5);
+    nivelCloroPorcentaje = static_cast <int> (pesoCloro * 100/ PESO_DEPOSITO_CLORO_LLENO);
+    if(pesoCloro < MINIMO_PESO_CLORO)
+    {
         errorNivelCloroBajo = HIGH;
     }
     delay(2000);

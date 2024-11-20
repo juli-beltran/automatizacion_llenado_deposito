@@ -10,7 +10,7 @@ void incrementoBloqueAgua()
 void solicitudClorado(void)
 {
   float volumenAguaTotalAcumulado; //volumen total acumulado, guardada en eeprom
-  float K1 = 1000.0; //conversion metros cubicos -> litro
+  const float K1 = 1000.0; //conversion metros cubicos -> litro
   EEPROM.get(VOLUMEN_AGUA_TOTAL_ACUMULADO, volumenAguaTotalAcumulado); 
   volumenAguaTotalAcumulado += (cicloLlenadoAgua / K1); // actualiza m3 acumulados
   EEPROM.update(VOLUMEN_AGUA_TOTAL_ACUMULADO, volumenAguaTotalAcumulado); //se salvan en EEPROM

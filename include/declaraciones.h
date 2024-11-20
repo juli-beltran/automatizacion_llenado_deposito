@@ -99,13 +99,13 @@ extern volatile unsigned int bloqueAgua; // acumula la cantidad de pulsos del ca
 
 extern float caudal; //caudal agua ingresada en litros/min 
 extern float cicloLlenadoAgua; //acumula la cantidad total del ciclo en litros, desde la variable bloqueAguaCopia
-
+extern float volAguaTotalAcc; //  m3 volumen total de agua acumulada 
 
 extern bool estadoBombaAgua; // HIGH funciona bomba, LOW detenida
 extern bool estadoBombaCloro; // HIGH funciona bomba, LOW detenida
 extern unsigned int tiempoFuncionamientoBombaAgua;//tiempo de funcionamiento de la bomba en sg
-extern float pesoInicialCloro;// en gr
-extern float pesoCalculadoCicloClorado;
+extern float pesoCloro;// en gr
+extern float pesoCalculadoCicloClorado; //peso de cloro a bombear
 
 
 
@@ -129,14 +129,34 @@ void controlNivel(void);
 void incrementoBloqueAgua(void);
 void controlCicloClorado(void);
 void controlPeso(void);
+void actualizaPantalla0(void);
 void actualizaPantalla1(void);
+void actualizaPantalla2(void);
+void actualizaPantalla3(void);
+void actualizaPantalla4_1(void);
+void actualizaPantalla4_2(void);
+void actualizaPantalla4_3(void);
+void actualizaPantalla4_4(void);
+void dibujaPantalla0(void);
 void dibujaPantalla1(void);
 void dibujaPantalla2(void);
-void actualizaPantalla2(void);
 void dibujaPantalla3(void);
-void actualizaPantalla3(void);
-void dibujaPantalla4(void);
+void dibujaPantalla4_1(void);
+void dibujaPantalla4_2(void);
+void dibujaPantalla4_3(void);
+void dibujaPantalla4_4(void);
+
+
+
+
+
+
+
+
 void lcdPrintEstadoBomba(void);
 void maquinaEstado(void);
 
 #endif
+
+
+

@@ -1,9 +1,10 @@
 posiciones memoria eeprom
-0       volumenNoClorado float
-4       m3volumenAcumulado float
-8       peso inicial cloro
-12      peso ciclo clorado teorico
-16      peso ciclo clorado real
-20      tiempo clorado
-24      volumen a clorar 
-28      error clorado     
+
+
+VOLUMEN_AGUA_NO_CLORADO_ACUMULADO = 0,//volumenNoClorado, float
+VOLUMEN_AGUA_TOTAL_ACUMULADO = 4,     //m3volumenAcumulado, float
+PESO_CLORO_CALCULADO_ULTIMO_CICLO = 8,      //peso ultimo ciclo clorado calculado, float
+PESO_CLORO_MEDIDO_ULTIMO_CICLO = 12,         //peso ultimo iclo clorado real, float
+TIEMPO_CLORADO_ULTIMO_CICLO = 16,            //tiempo clorado ultimo ciclo, unsigned int
+VOLUMEN_A_CLORAR_ULTIMO_CICLO = 20,                //volumen a clorar ultimo ciclo, float 
+ERROR_CLORADO = 24                    //error clorado

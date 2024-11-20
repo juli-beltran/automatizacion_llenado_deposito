@@ -4,14 +4,15 @@ HX711 Balanza;
 LiquidCrystal_I2C Lcd(0x27,20,4);
 
 
+bool tic0 = LOW;
+bool tic1 = LOW;
 
 
 uint8_t nivelAgua = 0;
-float pesoCalculadoCicloClorado = 0; //peso de cloro a bombear
-unsigned int tiempoClorado = 0 ;// tiempo en segundos de bombeado de cloro
-float pesoInicialCloro = 0;
-bool errorNivelCloroBajo = LOW;
 
+float pesoCloro = 0;
+bool errorNivelCloroBajo = false;
+float pesoCalculadoCicloClorado = 0;
 volatile unsigned int bloqueAgua=0;
 
 float cicloLlenadoAgua = 0; 
@@ -25,6 +26,7 @@ bool errorTiempoFuncionamientoBombaExcedido = false;
  
 bool estadoBombaCloro = LOW;
 bool errorClorado= false;
+float volAguaTotalAcc = 0;
 
 
  int nivelCloroPorcentaje = 0;
