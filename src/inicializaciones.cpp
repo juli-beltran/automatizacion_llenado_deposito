@@ -26,7 +26,7 @@ bool errorTiempoFuncionamientoBombaExcedido = false;
  
 bool estadoBombaCloro = LOW;
 bool errorClorado= false;
-float volAguaTotalAcc = 0;
+
 
 
  int nivelCloroPorcentaje = 0;

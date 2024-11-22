@@ -52,7 +52,7 @@ void controlCicloLlenadoAgua(void)
   bloqueAgua = 0;
   attachInterrupt(digitalPinToInterrupt(SENSOR_FLUJO), incrementoBloqueAgua, RISING);
   //calcula caudalmedio  y litros del bloque
-  caudal = bloqueAguaCopia * FACTOR_CAUDALIMETRO * K1;
+  caudal = bloqueAguaCopia * K1;
   litrosBloque = bloqueAguaCopia * K2;
 
   // incrementa ciclo de agua

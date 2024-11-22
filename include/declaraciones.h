@@ -38,8 +38,8 @@ extern HX711 Balanza;// declara objeto Balanza
   const uint8_t  SENSOR_PESO_SCK=3;
   const uint8_t  SENSOR_PESO_DOUT=4;
 //pines pulsadores
-  const uint8_t  PULSADOR_ADELANTE=5;
-  const uint8_t PULSADOR_ATRAS = 17; //pin arduino A3
+  const uint8_t  PULSADOR_ADELANTE=17; //pin arduino A3
+  const uint8_t PULSADOR_ATRAS = 5;
 
 //CONSTANTES DE USO EN MAS DE UN FICHERO
   //nombres de los niveles posibles de agua en el tanque
@@ -87,33 +87,31 @@ enum direccionesEEPROM
 extern bool tic0; //timer  SEMIPERIODO_TIC0
 extern bool tic1;// timer  tic0 x ESCALADO_TIC1 
 
-
+extern volatile unsigned int bloqueAgua; // acumula la cantidad de pulsos del caudalimetro durante tic2
 extern uint8_t nivelAgua ; // almacena nivel actual del deposito de agua (BAJO,MEDIO,ALTO,MAX)
+extern float caudal; //caudal agua ingresada en litros/min 
+extern float cicloLlenadoAgua; //acumula la cantidad total del ciclo en litros, desde la variable bloqueAguaCopia
+extern unsigned int tiempoFuncionamientoBombaAgua;//tiempo de funcionamiento de la bomba en sg
 
 extern bool errorCaudalAguaInsuficiente; // flujo insuficiente se pone a cero al reiniciar o desde pulador reset 
 extern bool errorTiempoFuncionamientoBombaExcedido; // tiempo  bomba en funcionamiento excedido se pone a cero al reiniciar o desde el pulsador reset
 extern bool errorClorado;// no hay concordancia entre el tiempo de clorado y la diferencia de peso
 extern bool errorNivelCloroBajo; // nivel cloro bajo
 
-extern volatile unsigned int bloqueAgua; // acumula la cantidad de pulsos del caudalimetro durante tic2
-
-extern float caudal; //caudal agua ingresada en litros/min 
-extern float cicloLlenadoAgua; //acumula la cantidad total del ciclo en litros, desde la variable bloqueAguaCopia
-extern float volAguaTotalAcc; //  m3 volumen total de agua acumulada 
-
 extern bool estadoBombaAgua; // HIGH funciona bomba, LOW detenida
 extern bool estadoBombaCloro; // HIGH funciona bomba, LOW detenida
-extern unsigned int tiempoFuncionamientoBombaAgua;//tiempo de funcionamiento de la bomba en sg
+
 extern float pesoCloro;// en gr
+extern int nivelCloroPorcentaje;
+
+extern float volumenAClorar; //litros de agua a clorar, si esta variable no es cero se inicia el clorado
+extern unsigned int tiempoClorado;
 extern float pesoCalculadoCicloClorado; //peso de cloro a bombear
 
 
-
-extern float volumenAClorar; //litros de agua a clorar, si esta variable no es cero se inicia el clorado
-
-extern int nivelCloroPorcentaje; 
  
-extern unsigned int tiempoClorado;
+ 
+
 
 /////////////////////declaracion funciones  
 void configurarGpio(void);

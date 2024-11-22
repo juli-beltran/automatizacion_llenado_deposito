@@ -5,10 +5,10 @@
 
 void maquinaEstado(void) {
 
-    static uint8_t estadoMaquina = 0;
+    static uint8_t estadoMaquina = 1;
     static bool anteriorTic = 0;
-    Pulsador pulsadorAdelante (PULSADOR_ADELANTE);
-    Pulsador pulsadorAtras (PULSADOR_ATRAS);
+    static Pulsador pulsadorAdelante (PULSADOR_ADELANTE);
+    static Pulsador pulsadorAtras (PULSADOR_ATRAS);
    
 
     enum estadosMaquina {
@@ -23,7 +23,12 @@ void maquinaEstado(void) {
         PANTALLA_4_4 //calibrado balanza
     };
 
-  switch (estadoMaquina)
+
+
+
+delay(50);
+
+   switch (estadoMaquina)
   {
 
       // pantalla 0///////////////////////////////////////////////////////////////////////////
@@ -34,7 +39,7 @@ void maquinaEstado(void) {
         dibujaPantalla1();
         break;
       }
-      if (tic1 != anteriorTic)
+      if (tic0 != anteriorTic)
       { //
         anteriorTic = tic1;
         actualizaPantalla0();
@@ -54,9 +59,9 @@ void maquinaEstado(void) {
         dibujaPantalla0();
         break;
       }
-      if (tic1 != anteriorTic)
+      if (tic0 != anteriorTic)
       { //
-        anteriorTic = tic1;
+        anteriorTic = tic0;
         actualizaPantalla1();
         break;
       }
@@ -74,9 +79,9 @@ void maquinaEstado(void) {
         dibujaPantalla1();
         break;
       }
-      if (tic1 != anteriorTic)
+      if (tic0 != anteriorTic)
       { // si NO_PULSADO
-        anteriorTic = tic1;
+        anteriorTic = tic0;
         actualizaPantalla2();
         break;
       }
@@ -94,7 +99,7 @@ void maquinaEstado(void) {
         dibujaPantalla2();
         break;
       } 
-      if (tic1 != anteriorTic)
+      if (tic0 != anteriorTic)
       { // si NO_PULSADO
         anteriorTic = tic1;
         actualizaPantalla3();
@@ -114,7 +119,11 @@ void maquinaEstado(void) {
         dibujaPantalla3();
         break;
       }
-      if (tic1 != anteriorTic)
+      if (pulsadorAdelante.lee() == PULSACION_LARGA)   //
+      {
+
+      }
+      if (tic0 != anteriorTic)
       { // si NO_PULSADO
         anteriorTic = tic1;
         actualizaPantalla4_1();
@@ -134,7 +143,7 @@ void maquinaEstado(void) {
         dibujaPantalla4_1();
         break;
       }
-      if (tic1 != anteriorTic)
+      if (tic0 != anteriorTic)
       { // si NO_PULSADO
         anteriorTic = tic1;
         actualizaPantalla4_2();
@@ -154,7 +163,7 @@ void maquinaEstado(void) {
         dibujaPantalla4_2();
         break;
       }
-      if (tic1 != anteriorTic) // si NO_PULSADO
+      if (tic0 != anteriorTic) // si NO_PULSADO
       {
         anteriorTic = tic1;
         actualizaPantalla4_3();
@@ -168,7 +177,7 @@ void maquinaEstado(void) {
         dibujaPantalla4_3();
         break;
       }
-      if (tic1 != anteriorTic)
+      if (tic0 != anteriorTic)
       { // si NO_PULSADO
         anteriorTic = tic1;
         actualizaPantalla4_4();
@@ -178,4 +187,5 @@ void maquinaEstado(void) {
 
   }  
   
-}
+
+ }

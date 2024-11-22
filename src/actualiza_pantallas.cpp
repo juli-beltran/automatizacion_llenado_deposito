@@ -38,9 +38,9 @@ void actualizaPantalla2(void)
   EEPROM.get(VOLUMEN_A_CLORAR_ULTIMO_CICLO, VolAguaAc);
   Lcd.setCursor(16, 0);
   Lcd.print(tiempoFuncionamientoBombaAgua);
-  Lcd.setCursor(17, 1);
+  Lcd.setCursor(16, 1);
   Lcd.print(cicloLlenadoAgua);
-  Lcd.setCursor(12, 3);
+  Lcd.setCursor(12, 2);
   Lcd.print(caudal); 
   Lcd.setCursor(15, 3) ; 
   Lcd.print(VolAguaAc);

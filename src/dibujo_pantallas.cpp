@@ -24,7 +24,7 @@ void dibujaPantalla2(void)
   Lcd.setCursor(1, 0);
   Lcd.print("BombaTiempo[m]=");
   Lcd.setCursor(1, 1);
-  Lcd.print("VolCicloAgua[l]=");
+  Lcd.print("VolCiclAgua[l]=");
   Lcd.setCursor(1, 2);
   Lcd.print("Caudal[l/m]=");
   Lcd.setCursor(1, 3);
