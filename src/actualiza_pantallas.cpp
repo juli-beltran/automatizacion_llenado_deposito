@@ -67,12 +67,52 @@ void actualizaPantalla3(void)
 }
 void actualizaPantalla4_1(void)
 {
-
+   
+  if (banderaBorradoError==true)
+  {
+    if (contadorPresentacionBorradoDisplay<2)
+    {
+      Lcd.setCursor (0,0);
+      Lcd.print (" sin errores       ");
+      contadorPresentacionBorradoDisplay++;
+      return;
+    }
+    else
+    {
+      
+      banderaBorradoError = false; 
+      Lcd.setCursor (0,0);
+      Lcd.print (">BorraErroresBomba");
+    }     
+    return;  
+  }
 }
 void actualizaPantalla4_2(void)
 {
-
+  
+  if (banderaBorradoError==true)
+  {
+    if (contadorPresentacionBorradoDisplay<2)
+    {
+      Lcd.setCursor (0,1);
+      Lcd.print (" sin errores       ");
+      contadorPresentacionBorradoDisplay++;
+      return;
+    }
+    else
+    {
+     
+      banderaBorradoError = false; 
+      
+      Lcd.setCursor (0,1);
+      Lcd.print(">BorraErroresCloro");
+    }     
+    return;  
+  }
+  return;
 }
+
+
 void actualizaPantalla4_3(void)
 {
 

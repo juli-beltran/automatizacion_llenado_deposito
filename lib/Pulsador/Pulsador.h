@@ -1,16 +1,18 @@
 #include <Arduino.h>
 #ifndef PULSADOR_H
-#define PULSADOR_H
-enum lecturasPulsador
+
+enum estadoPulsador
 {
     NO_ACCION,
-    PULSACION_CORTA,
-    PULSACION_LARGA
+    PRESIONADO, // mas de TIEMPO DE CLICK EXCEDIDO pulsado
+    CLICK,
+    INICIO_PULSACION //inicio de pulsacion, a continuacion sera CLICK o PRESIONADO
 };
-
+//lectura pulsador
 const bool PULSADO = LOW;
 const bool NO_PULSADO = HIGH;
-const unsigned long TIEMPO_ACTIVACION_PRESIONADO_LARGO = 5000L;
+const uint8_t FILTRO_DEBOUNCE = 15;
+const unsigned int TIEMPO_CLICK_EXCEDIDO = 1800;
 
 class Pulsador
 {
@@ -18,13 +20,15 @@ class Pulsador
 private:
     uint8_t pinPulsador;
     unsigned long tiempoInicioPulsacion;
-    bool estadoAnteriorPulsador;
+    bool estadoAnteriorPulsador = NO_PULSADO;
     bool estadoActualPulsador;
-    bool bloqueoTrasPulsacionLarga;
+
+    uint8_t debonce;
 
 public:
     Pulsador(uint8_t);
-    int lee(void);
+    int estadoPulsador(void);
+    int tiempoPulsacion (void);
+    void actualiza (void);
 };
-
 #endif

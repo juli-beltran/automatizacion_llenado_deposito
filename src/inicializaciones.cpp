@@ -2,6 +2,8 @@
 
 HX711 Balanza;
 LiquidCrystal_I2C Lcd(0x27,20,4);
+Pulsador pulsadorAdelante(PULSADOR_ADELANTE);
+Pulsador pulsadorAtras(PULSADOR_ATRAS);
 
 
 bool tic0 = LOW;
@@ -26,6 +28,8 @@ bool errorTiempoFuncionamientoBombaExcedido = false;
  
 bool estadoBombaCloro = LOW;
 bool errorClorado= false;
+bool banderaBorradoError= false;
+uint8_t contadorPresentacionBorradoDisplay= 0;
 
 
 
