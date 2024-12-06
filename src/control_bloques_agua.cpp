@@ -13,7 +13,7 @@ void solicitudClorado(void)
   const float K1 = 1000.0; //conversion metros cubicos -> litro
   EEPROM.get(VOLUMEN_AGUA_TOTAL_ACUMULADO, volumenAguaTotalAcumulado); 
   volumenAguaTotalAcumulado += (cicloLlenadoAgua / K1); // actualiza m3 acumulados
-  EEPROM.update(VOLUMEN_AGUA_TOTAL_ACUMULADO, volumenAguaTotalAcumulado); //se salvan en EEPROM
+  updateEEPPOM(VOLUMEN_AGUA_TOTAL_ACUMULADO, volumenAguaTotalAcumulado); //se salvan en EEPROM
   volumenAClorar = cicloLlenadoAgua; //activa ciclo clorado y resetea ciclo llenado agua
   cicloLlenadoAgua = 0;
 }
@@ -52,6 +52,7 @@ void controlCicloLlenadoAgua(void)
   bloqueAgua = 0;
   attachInterrupt(digitalPinToInterrupt(SENSOR_FLUJO), incrementoBloqueAgua, RISING);
   //calcula caudalmedio  y litros del bloque
+  
   caudal = bloqueAguaCopia * K1;
   litrosBloque = bloqueAguaCopia * K2;
 
@@ -75,11 +76,11 @@ void controlCicloLlenadoAgua(void)
 
   if (bloqueAguaCopia == 0) // comprueba si hay caudal o no
   {
-    estadoLlenado = CON_CAUDAL;
+    estadoLlenado = SIN_CAUDAL;
   }
   else
   {
-    estadoLlenado = SIN_CAUDAL;
+    estadoLlenado = CON_CAUDAL;
   }
 
   if ((estadoLlenado == CON_CAUDAL) && (estadoDeControl == ESPERANDO_BLOQUE_CON_CAUDAL))

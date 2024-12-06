@@ -88,13 +88,13 @@ enum accionesUsuario
   const unsigned int PERIODO_TIC0 = 1000; //tic 0 cambio de nivel 1000 ms
   const unsigned int ESCALADO_TIC1 = 5; //escalado para tic 1 cambio de nivel cada 1 sg
   // factores caudalimetro, bomba cloro y balanza
-  const float FACTOR_CAUDALIMETRO = 3.5F; // en ml / imp  //
+  const float FACTOR_CAUDALIMETRO = (float) 50; // en ml / imp  //3.5
   const float FACTOR_BOMBA_CLORO = 1.42F; //en ml / sg
   const float FACTOR_BALANZA = 416.4F;
   // cinstantes ciclo agua---------------------------------------------------
   const unsigned int MAXIMO_TIEMPO_FUNCIONAMIENTO_BOMBA = 3600; // tiempo maximo de funcionamiento en sg 
-  const float  VOLUMEN_FINALIZACION_CICLO_AGUA =  100 ; //litros finalizacion ciclo llenado, empieza clorado
-  const float VOLUMEN_MINIMO_A_CLORAR = 20 ; // litros minimos ingresados para iniciar un clorado, genera error1
+  const float  VOLUMEN_FINALIZACION_CICLO_AGUA =  15 ; //litros finalizacion ciclo llenado, empieza clorado
+  const float VOLUMEN_MINIMO_A_CLORAR =10 ; // litros minimos ingresados para iniciar un clorado, genera error1
   const float MINIMO_CAUDAL = 1; //caudal minimo en litros/min
 
   // constantes coclo clorado
@@ -180,6 +180,12 @@ int accionesUsusario (void);
 
 void lcdPrintEstadoBomba(void);
 void maquinaEstado(void);
+void updateEEPPOM(int,float);
+void updateEEPPOM(int,unsigned int);
+void updateEEPPOM(int,bool);
+void displayValue(int, int, int, float , int );
+void displayValue( int , int , int , unsigned int ) ;
+
 
 #endif
 

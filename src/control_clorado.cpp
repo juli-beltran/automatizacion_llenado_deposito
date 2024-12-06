@@ -22,27 +22,31 @@ void controlCicloClorado() {
 
   // Si hay volumen y un error de clorado, acumula el volumen y sale
   if ( errorClorado == true) { 
+    
     EEPROM.get(VOLUMEN_AGUA_NO_CLORADO_ACUMULADO, volumenNoClorado); 
     volumenNoClorado += volumenAClorar;
-    EEPROM.update(VOLUMEN_AGUA_NO_CLORADO_ACUMULADO, volumenNoClorado);
+    updateEEPPOM(VOLUMEN_AGUA_NO_CLORADO_ACUMULADO, volumenNoClorado);
     volumenAClorar = 0;
     return;
   }
 
-  // Si no hay tiempo de estabilización 
+  // Si no hay tiempo de estabilización , o sea primera pasada
   if (contadorTiempoEstabilizacion == 0) {  
+    
 
     if (estadoBombaCloro == LOW) {  // Inicia la bomba de cloro y calcula los parámetros
+      
       pesoCalculadoCicloClorado = (volumenAClorar * DOSIS_CLORO ) +1;
       tiempoClorado = static_cast <int> (pesoCalculadoCicloClorado / FACTOR_BOMBA_CLORO) + 1;// redondeado siempre hacia arriba
-      EEPROM.update(VOLUMEN_A_CLORAR_ULTIMO_CICLO, volumenAClorar);
-      EEPROM.update(PESO_CLORO_CALCULADO_ULTIMO_CICLO, pesoCalculadoCicloClorado);
-      EEPROM.update(TIEMPO_CLORADO_ULTIMO_CICLO, tiempoClorado);
+      updateEEPPOM(VOLUMEN_A_CLORAR_ULTIMO_CICLO, volumenAClorar);
+      updateEEPPOM(PESO_CLORO_CALCULADO_ULTIMO_CICLO, pesoCalculadoCicloClorado);
+      updateEEPPOM(TIEMPO_CLORADO_ULTIMO_CICLO, tiempoClorado);
       pesoCloro = Balanza.get_units(NUMERO_MUESTRAS_PESO);  
       
       // Activa bomba y resetea tiempo
       contadorTiempoclorado = 0;
-      
+    
+
 
       digitalWrite(RELE_CLORO, HIGH);
       estadoBombaCloro = HIGH;
@@ -58,7 +62,7 @@ void controlCicloClorado() {
     // Finaliza el ciclo de clorado
     digitalWrite(RELE_CLORO, LOW);  
     estadoBombaCloro = LOW;
-    contadorTiempoclorado = 0;  // Resetea el tiempo
+    //contadorTiempoclorado = 0;  // Resetea el tiempo
     contadorTiempoEstabilizacion = TIEMPO_ESTABILIZACION;// Activa tiempo de estabilización
     return;
       
@@ -68,6 +72,7 @@ void controlCicloClorado() {
 
 if (contadorTiempoEstabilizacion > 1) {
     contadorTiempoEstabilizacion--;
+    
     return;
 }
   
@@ -79,7 +84,7 @@ if (errorClorado == HIGH)
 {  
   EEPROM.get(VOLUMEN_AGUA_NO_CLORADO_ACUMULADO, volumenNoClorado); 
   volumenNoClorado += volumenAClorar;  
-  EEPROM.update(VOLUMEN_AGUA_NO_CLORADO_ACUMULADO, volumenNoClorado); 
+  updateEEPPOM(VOLUMEN_AGUA_NO_CLORADO_ACUMULADO, volumenNoClorado); 
 }
   contadorTiempoEstabilizacion = 0;
   volumenAClorar = 0;  // Finaliza la petición de clorado
@@ -90,7 +95,7 @@ void controlPeso() {
   float PesoMedidoCicloCloro; //peso real cloro bombeado
   pesoFinalCloro = Balanza.get_units(NUMERO_MUESTRAS_PESO);
   PesoMedidoCicloCloro = pesoCloro - pesoFinalCloro;
-  EEPROM.update(PESO_CLORO_MEDIDO_ULTIMO_CICLO, PesoMedidoCicloCloro);
+  updateEEPPOM(PESO_CLORO_MEDIDO_ULTIMO_CICLO, PesoMedidoCicloCloro);
   pesoCloro = pesoFinalCloro;
   nivelCloroPorcentaje = static_cast <int> (pesoCloro * 100/ PESO_DEPOSITO_CLORO_LLENO);
   
@@ -101,6 +106,7 @@ void controlPeso() {
   }
   if (abs(PesoMedidoCicloCloro - pesoCalculadoCicloClorado) > 0.1 * pesoCalculadoCicloClorado) {  // Factor de error ajustado al 10%
     errorClorado = HIGH;
-    EEPROM.update(ERROR_CLORADO, errorClorado);
+    updateEEPPOM(ERROR_CLORADO, errorClorado);
+    
   }
 }

@@ -25,25 +25,18 @@ void actualizaPantalla1(void)
   EEPROM.get(VOLUMEN_AGUA_NO_CLORADO_ACUMULADO, volNoClor); 
   Lcd.setCursor(11, 0);
   lcdPrintEstadoBomba();
-  Lcd.setCursor(12, 1);
-  Lcd.print(caudal);
-  Lcd.setCursor(14, 2);
-  Lcd.print(volNoClor);
-  Lcd.setCursor(14, 3);
-  Lcd.print(nivelCloroPorcentaje);
+  displayValue( 13, 1, 7, caudal , 1);
+  displayValue( 14, 2, 6, volNoClor, 0);
+  displayValue( 15, 3, 5, nivelCloroPorcentaje, 1);
 }
 void actualizaPantalla2(void)
 {
   float VolAguaAc;
-  EEPROM.get(VOLUMEN_A_CLORAR_ULTIMO_CICLO, VolAguaAc);
-  Lcd.setCursor(16, 0);
-  Lcd.print(tiempoFuncionamientoBombaAgua);
-  Lcd.setCursor(16, 1);
-  Lcd.print(cicloLlenadoAgua);
-  Lcd.setCursor(12, 2);
-  Lcd.print(caudal); 
-  Lcd.setCursor(15, 3) ; 
-  Lcd.print(VolAguaAc);
+  EEPROM.get(VOLUMEN_AGUA_TOTAL_ACUMULADO, VolAguaAc);
+  displayValue( 16, 0, 4, tiempoFuncionamientoBombaAgua/60);
+  displayValue( 15, 1, 5, cicloLlenadoAgua, 1);
+  displayValue( 13, 2, 7, caudal, 1);
+  displayValue( 15, 3, 5, VolAguaAc , 1);
 }
 void actualizaPantalla3(void)
 {
@@ -56,14 +49,12 @@ void actualizaPantalla3(void)
   EEPROM.get(PESO_CLORO_CALCULADO_ULTIMO_CICLO, pesoCloTeor);
   EEPROM.get(PESO_CLORO_MEDIDO_ULTIMO_CICLO, pesoCloReal);
 
-  Lcd.setCursor(14, 0);
-  Lcd.print(volAClorar);
-  Lcd.setCursor(18, 1);
-  Lcd.print(tiempoBombaCl);
-  Lcd.setCursor(16, 3);
-  Lcd.print(pesoCloTeor); 
-  Lcd.setCursor(16, 3) ; 
-  Lcd.print( pesoCloReal);
+
+  displayValue( 14, 0, 6,volAClorar,1 );
+  displayValue( 18, 1, 2,tiempoBombaCl );
+  displayValue( 16, 2, 4,pesoCloTeor , 0);
+  displayValue( 16, 3, 4, pesoCloReal , 0);
+  
 }
 void actualizaPantalla4_1(void)
 {
@@ -120,4 +111,48 @@ void actualizaPantalla4_3(void)
 void actualizaPantalla4_4(void)
 {
 
+}
+
+void displayValue(int col, int row, int width, float value, int decimals) {
+    // Mueve el cursor a la posición inicial
+    Lcd.setCursor(col, row);
+    
+    // Genera el formato del número con el número de decimales deseados
+    String formattedValue = String(value, decimals);
+    if (formattedValue[0] == ' ') 
+      {
+          formattedValue = formattedValue.substring(1); // Eliminar el primer carácter
+      }
+    
+    // Ajusta la longitud del texto con espacios en blanco al final
+    while (formattedValue.length() < width) {
+        formattedValue += " ";
+    }
+  Serial.println( formattedValue);
+    
+    // Asegura que no exceda el ancho asignado
+    formattedValue = formattedValue.substring(0, width);
+    // Escribe el texto formateado en el LCD
+    Lcd.print(formattedValue);
+}
+
+// Función para formatear y mostrar un número int
+void displayValue( int col, int row, int width, unsigned int value) {
+    // Mueve el cursor a la posición inicial
+    Lcd.setCursor(col, row);
+    
+    // Convierte el valor en String
+    String formattedValue = String(value);
+
+    
+    // Ajusta la longitud del texto con espacios en blanco al final
+    while (formattedValue.length() < width) {
+        formattedValue += " ";
+    }
+    
+    // Asegura que no exceda el ancho asignado
+    formattedValue = formattedValue.substring(0, width);
+    
+    // Escribe el texto formateado en el LCD
+    Lcd.print(formattedValue);
 }

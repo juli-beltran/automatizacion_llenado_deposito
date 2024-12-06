@@ -24,11 +24,11 @@ void dibujaPantalla2(void)
   Lcd.setCursor(1, 0);
   Lcd.print("BombaTiempo[m]=");
   Lcd.setCursor(1, 1);
-  Lcd.print("VolCiclAgua[l]=");
+  Lcd.print("VolCicloAg[l]=");
   Lcd.setCursor(1, 2);
   Lcd.print("Caudal[l/m]=");
   Lcd.setCursor(1, 3);
-  Lcd.print("VolAguaAc[m3]");
+  Lcd.print("VolAguaAc[m3]=");
 }
 void dibujaPantalla3(void)
 {
@@ -36,7 +36,7 @@ void dibujaPantalla3(void)
   Lcd.setCursor(1, 0);
   Lcd.print("VolAClorar[l]=");
   Lcd.setCursor(1, 1);
-  Lcd.print("TiempoBombaCl[s]");
+  Lcd.print("TiempoBombaCl[s]=");
   Lcd.setCursor(1, 2);
   Lcd.print("PesoCloTeor[g]=");
   Lcd.setCursor(1, 3);

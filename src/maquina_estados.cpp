@@ -141,7 +141,7 @@ void maquinaEstado(void) {
         break;
       case PULSADOR_1_PULSACION_LARGA:
         errorClorado = false;
-        EEPROM.update (VOLUMEN_AGUA_NO_CLORADO_ACUMULADO, 0.0F);
+        updateEEPPOM (VOLUMEN_AGUA_NO_CLORADO_ACUMULADO, 0.0F);
         banderaBorradoError = true;
         contadorPresentacionBorradoDisplay=0;
       default:
