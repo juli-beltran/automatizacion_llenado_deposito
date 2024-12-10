@@ -112,8 +112,24 @@ void actualizaPantalla4_4(void)
 {
 
 }
+void actualizaPantalla4_3_1 (void)
+{
 
-void displayValue(int col, int row, int width, float value, int decimals) {
+  
+  Lcd.setCursor(7, 1);
+  if (estadoBombaCloro==HIGH)
+  {
+    Lcd.print("  ");
+  }
+  else
+  {
+    Lcd.print("No");
+  }
+  displayValue( 18, 1, 3,tiempoCloradoManual);
+
+
+}
+void displayValue(int col, int row,  unsigned int width, float value, int decimals) {
     // Mueve el cursor a la posición inicial
     Lcd.setCursor(col, row);
     
@@ -128,7 +144,7 @@ void displayValue(int col, int row, int width, float value, int decimals) {
     while (formattedValue.length() < width) {
         formattedValue += " ";
     }
-  Serial.println( formattedValue);
+  
     
     // Asegura que no exceda el ancho asignado
     formattedValue = formattedValue.substring(0, width);
@@ -137,7 +153,7 @@ void displayValue(int col, int row, int width, float value, int decimals) {
 }
 
 // Función para formatear y mostrar un número int
-void displayValue( int col, int row, int width, unsigned int value) {
+void displayValue( int col, int row, unsigned int width, unsigned int value) {
     // Mueve el cursor a la posición inicial
     Lcd.setCursor(col, row);
     

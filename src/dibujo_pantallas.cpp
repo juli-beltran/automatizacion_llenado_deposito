@@ -91,3 +91,16 @@ void dibujaPantalla4_4(void)
   Lcd.setCursor(0, 3);
   Lcd.print(">Calibrado balanza");
 }
+
+void dibujaPantalla4_3_1 (void)
+{
+  Lcd.clear();
+  Lcd.setCursor(0, 0);
+  Lcd.print(" Clorado Manual");
+  Lcd.setCursor(0, 1);
+  Lcd.print(" Bomba NoActiva t=");
+  Lcd.setCursor(0, 2);
+  Lcd.print(" Vol=     Peso=");
+  Lcd.setCursor(0, 3);
+  Lcd.print("VolAguaClorado="); 
+}

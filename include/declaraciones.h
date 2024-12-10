@@ -73,7 +73,8 @@ enum estadosMaquina
   PANTALLA_4_1, // borrado errores bomba agua
   PANTALLA_4_2, // borrado errores bomba cloro
   PANTALLA_4_3, // accionamiento manual bomba de cloro
-  PANTALLA_4_4  // calibrado balanza
+  PANTALLA_4_4, // calibrado balanza
+  PANTALLA_4_3_1// acciona bomba de cloro
 };
 enum accionesUsuario
 {
@@ -89,7 +90,7 @@ enum accionesUsuario
   const unsigned int ESCALADO_TIC1 = 5; //escalado para tic 1 cambio de nivel cada 1 sg
   // factores caudalimetro, bomba cloro y balanza
   const float FACTOR_CAUDALIMETRO = (float) 50; // en ml / imp  //3.5
-  const float FACTOR_BOMBA_CLORO = 1.42F; //en ml / sg
+  const float FACTOR_BOMBA_CLORO = 1.42F; //en gr/ sg
   const float FACTOR_BALANZA = 416.4F;
   // cinstantes ciclo agua---------------------------------------------------
   const unsigned int MAXIMO_TIEMPO_FUNCIONAMIENTO_BOMBA = 3600; // tiempo maximo de funcionamiento en sg 
@@ -119,12 +120,12 @@ extern unsigned int tiempoFuncionamientoBombaAgua;//tiempo de funcionamiento de 
 
 extern bool errorCaudalAguaInsuficiente; // flujo insuficiente se pone a cero al reiniciar o desde pulador reset 
 extern bool errorTiempoFuncionamientoBombaExcedido; // tiempo  bomba en funcionamiento excedido se pone a cero al reiniciar o desde el pulsador reset
-extern bool errorClorado;// no hay concordancia entre el tiempo de clorado y la diferencia de peso
-extern bool errorNivelCloroBajo; // nivel cloro bajo
+
 
 extern bool estadoBombaAgua; // HIGH funciona bomba, LOW detenida
 extern bool estadoBombaCloro; // HIGH funciona bomba, LOW detenida
-extern bool banderaBorradoError;
+extern bool banderaBorradoError;//utilizada para señalar el borrado de los errores en el lcd
+
 extern uint8_t contadorPresentacionBorradoDisplay;
 
 extern float pesoCloro;// en gr
@@ -132,12 +133,15 @@ extern int nivelCloroPorcentaje;
 
 extern float volumenAClorar; //litros de agua a clorar, si esta variable no es cero se inicia el clorado
 extern unsigned int tiempoClorado;
+extern unsigned int tiempoCloradoManual;
 extern float pesoCalculadoCicloClorado; //peso de cloro a bombear
-
-
+extern bool bloqueoPorCloradoManual;
+extern bool errorClorado;// no hay concordancia entre el tiempo de clorado y la diferencia de peso
+extern bool errorNivelCloroBajo; // nivel cloro bajo
+extern float pesoFinalCloro;// en gr
+extern float pesoMedidoCicloCloro;
  
- 
-
+extern float volumenCloradoManual;
 
 /////////////////////declaracion funciones  
 void configurarGpio(void);
@@ -161,6 +165,7 @@ void actualizaPantalla4_1(void);
 void actualizaPantalla4_2(void);
 void actualizaPantalla4_3(void);
 void actualizaPantalla4_4(void);
+void actualizaPantalla4_3_1(void);
 void dibujaPantalla0(void);
 void dibujaPantalla1(void);
 void dibujaPantalla2(void);
@@ -169,6 +174,7 @@ void dibujaPantalla4_1(void);
 void dibujaPantalla4_2(void);
 void dibujaPantalla4_3(void);
 void dibujaPantalla4_4(void);
+void dibujaPantalla4_3_1(void);
 int accionesUsusario (void);
 
 
@@ -183,8 +189,8 @@ void maquinaEstado(void);
 void updateEEPPOM(int,float);
 void updateEEPPOM(int,unsigned int);
 void updateEEPPOM(int,bool);
-void displayValue(int, int, int, float , int );
-void displayValue( int , int , int , unsigned int ) ;
+void displayValue(int, int, unsigned int, float , int );
+void displayValue( int , int , unsigned int , unsigned int ) ;
 
 
 #endif

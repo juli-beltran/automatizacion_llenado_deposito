@@ -47,7 +47,11 @@ void loop() {
 
         controlNivel();//lee nivel Agua;
         controlBombaAgua(); //activa o desactiva rele bomba, modifica estadoBombaAgua, activa error 2
-        controlCicloClorado();
+        
+        if(bloqueoPorCloradoManual==false)  
+        {
+            controlCicloClorado();
+        }
         //actualiza leds
         actualizaLedBomba();
         actualizaLedCloro();

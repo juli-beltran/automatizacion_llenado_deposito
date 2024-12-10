@@ -21,7 +21,7 @@ if (estadoPulsadorAdelante == CLICK)
 if (estadoPulsadorAdelante == PRESIONADO)
 {
     pulsadorAtras.actualiza();
-    if (tiempoPulsadorAdelante > 5)
+    if (tiempoPulsadorAdelante > 3)
     {
         return PULSADOR_1_PULSACION_LARGA;
     }

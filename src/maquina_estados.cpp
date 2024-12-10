@@ -10,6 +10,7 @@ void maquinaEstado(void) {
 
 
 
+
    switch (estadoMaquina)
   {
 
@@ -165,11 +166,100 @@ void maquinaEstado(void) {
         estadoMaquina = PANTALLA_4_2;
         dibujaPantalla4_2();
         break;
+      case PULSADOR_1_PULSACION_LARGA:
+       if (volumenAClorar == 0) //asegura que no este activo un ciclo de clorado automatico
+       {  
+          estadoMaquina = PANTALLA_4_3_1;
+          bloqueoPorCloradoManual = true; //para bloquear clorado automatico
+          pesoCloro = Balanza.get_units(NUMERO_MUESTRAS_PESO); 
+          dibujaPantalla4_3_1();
+          
+        }
+        break;
       default:
       if (tic0 != anteriorTic) // si NO_PULSADO
       {
         anteriorTic = tic1;
         actualizaPantalla4_3();
+        break;
+      }
+    }
+    break;
+// pantalla 4_3_1//////////////////////////////////
+      case PANTALLA_4_3_1:
+      static bool banderaPrimeraEntrada = true;
+      static bool inicioContadorTiempoCloradoManual =false;
+      static bool banderaCloradoManualEfectuado = false;
+      if(banderaPrimeraEntrada == true) 
+      {
+        if( accionesUsusario()!= NULA)
+        {
+          banderaPrimeraEntrada= false;
+        }
+      break;
+      }
+      //controlar que ususario suelte el boton y lo vuelva a pulsar largo
+    switch (accionesUsusario())
+    {
+    case PULSADOR_2_CLICK:
+          if(estadoBombaCloro ==HIGH)
+      {
+          digitalWrite(RELE_CLORO, LOW);  
+          estadoBombaCloro = LOW;
+      }
+        estadoMaquina = PANTALLA_4_3;
+        bloqueoPorCloradoManual = false;
+        inicioContadorTiempoCloradoManual=false;
+        banderaPrimeraEntrada= false;
+        if(banderaCloradoManualEfectuado==true)
+        {
+        pesoCloro = pesoFinalCloro;
+        updateEEPPOM(VOLUMEN_A_CLORAR_ULTIMO_CICLO, volumenCloradoManual);
+        updateEEPPOM(PESO_CLORO_CALCULADO_ULTIMO_CICLO, pesoCalculadoCicloClorado);
+        updateEEPPOM(TIEMPO_CLORADO_ULTIMO_CICLO, tiempoCloradoManual);
+        updateEEPPOM(PESO_CLORO_MEDIDO_ULTIMO_CICLO, pesoMedidoCicloCloro);
+      if(estadoBombaCloro ==HIGH)
+      {
+          digitalWrite(RELE_CLORO, LOW);  
+          estadoBombaCloro = LOW;
+      }
+        banderaCloradoManualEfectuado= false;
+        }
+        dibujaPantalla4_3();
+        break;
+    case PULSADOR_1_PULSACION_LARGA:
+    if (inicioContadorTiempoCloradoManual ==false)
+    {
+      inicioContadorTiempoCloradoManual= true;
+      tiempoCloradoManual = 0;
+      digitalWrite(RELE_CLORO, HIGH);
+      estadoBombaCloro = HIGH;
+      banderaCloradoManualEfectuado = true;
+
+    }
+    else {
+    tiempoCloradoManual ++;
+    pesoCalculadoCicloClorado= tiempoClorado*FACTOR_BOMBA_CLORO;
+  pesoFinalCloro = Balanza.get_units(NUMERO_MUESTRAS_PESO);
+  pesoMedidoCicloCloro = pesoCloro - pesoFinalCloro;
+  volumenCloradoManual = pesoMedidoCicloCloro/DOSIS_CLORO;
+  actualizaPantalla4_3_1();
+    
+
+
+
+      default:
+      if(estadoBombaCloro ==HIGH)
+      {
+          digitalWrite(RELE_CLORO, LOW);  
+          estadoBombaCloro = LOW;
+      }
+
+
+      //if (tic0 != anteriorTic)
+     // { // si NO_PULSADO
+       // anteriorTic = tic1;
+      //  actualizaPantalla4_3_1();
         break;
       }
     }

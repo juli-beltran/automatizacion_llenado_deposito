@@ -91,11 +91,10 @@ if (errorClorado == HIGH)
 }
 
 void controlPeso() {
-  float pesoFinalCloro;// en gr
-  float PesoMedidoCicloCloro; //peso real cloro bombeado
+  
   pesoFinalCloro = Balanza.get_units(NUMERO_MUESTRAS_PESO);
-  PesoMedidoCicloCloro = pesoCloro - pesoFinalCloro;
-  updateEEPPOM(PESO_CLORO_MEDIDO_ULTIMO_CICLO, PesoMedidoCicloCloro);
+  pesoMedidoCicloCloro = pesoCloro - pesoFinalCloro;
+  updateEEPPOM(PESO_CLORO_MEDIDO_ULTIMO_CICLO, pesoCalculadoCicloClorado);
   pesoCloro = pesoFinalCloro;
   nivelCloroPorcentaje = static_cast <int> (pesoCloro * 100/ PESO_DEPOSITO_CLORO_LLENO);
   
@@ -104,7 +103,7 @@ void controlPeso() {
     errorNivelCloroBajo = HIGH;
     
   }
-  if (abs(PesoMedidoCicloCloro - pesoCalculadoCicloClorado) > 0.1 * pesoCalculadoCicloClorado) {  // Factor de error ajustado al 10%
+  if (abs(pesoMedidoCicloCloro - pesoCalculadoCicloClorado) > 0.1 * pesoCalculadoCicloClorado) {  // Factor de error ajustado al 10%
     errorClorado = HIGH;
     updateEEPPOM(ERROR_CLORADO, errorClorado);
     
