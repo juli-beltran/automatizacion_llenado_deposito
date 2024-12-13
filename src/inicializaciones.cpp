@@ -33,7 +33,11 @@ bool errorClorado= false;
 bool banderaBorradoError= false;
 bool bloqueoPorCloradoManual = false;
 uint8_t contadorPresentacionBorradoDisplay= 0;
-
+bool activacionCloradoManual= false;
+bool inicioContadorTiempoCloradoManual = false;
+bool banderaCloradoManualEfectuado = false;
+bool  banderaPrimeraEntrada = true;
+bool  contadorTiempoInactivo = 0;
 
 
  int nivelCloroPorcentaje = 0;

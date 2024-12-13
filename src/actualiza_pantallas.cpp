@@ -125,7 +125,7 @@ void actualizaPantalla4_3_1 (void)
   {
     Lcd.print("No");
   }
-  displayValue( 18, 1, 3,tiempoCloradoManual);
+  displayValue( 17, 1, 3,tiempoCloradoManual);
 
 
 }

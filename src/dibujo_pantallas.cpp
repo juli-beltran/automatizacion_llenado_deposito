@@ -98,9 +98,9 @@ void dibujaPantalla4_3_1 (void)
   Lcd.setCursor(0, 0);
   Lcd.print(" Clorado Manual");
   Lcd.setCursor(0, 1);
-  Lcd.print(" Bomba NoActiva t=");
+  Lcd.print(" BombaNoActiv t=");
   Lcd.setCursor(0, 2);
   Lcd.print(" Vol=     Peso=");
   Lcd.setCursor(0, 3);
-  Lcd.print("VolAguaClorado="); 
+  Lcd.print(" VolAguaClorado="); 
 }

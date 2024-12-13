@@ -52,6 +52,10 @@ void loop() {
         {
             controlCicloClorado();
         }
+        if(activacionCloradoManual== true)
+        {
+            cloradoManual();
+        }
         //actualiza leds
         actualizaLedBomba();
         actualizaLedCloro();

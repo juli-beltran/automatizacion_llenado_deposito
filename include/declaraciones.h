@@ -142,6 +142,11 @@ extern float pesoFinalCloro;// en gr
 extern float pesoMedidoCicloCloro;
  
 extern float volumenCloradoManual;
+extern bool activacionCloradoManual;
+extern bool inicioContadorTiempoCloradoManual;
+extern bool banderaCloradoManualEfectuado;
+extern bool banderaPrimeraEntrada;
+extern bool contadorTiempoInactivo;
 
 /////////////////////declaracion funciones  
 void configurarGpio(void);
@@ -191,6 +196,8 @@ void updateEEPPOM(int,unsigned int);
 void updateEEPPOM(int,bool);
 void displayValue(int, int, unsigned int, float , int );
 void displayValue( int , int , unsigned int , unsigned int ) ;
+void cloradoManual(void);
+void salidaDeCloradoManual(void);
 
 
 #endif
